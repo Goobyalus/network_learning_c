@@ -33,7 +33,7 @@ int main() {
 		error("ERROR opening socket");
 	}
 
-	// Bind to socket
+	// Bind socket
 	bzero((char *) &serv_addr, sizeof(serv_addr)); // zero addr struct
 	portno = atoi(PORT_STR);				// port no fm string
 	serv_addr.sin_family = AF_INET;			// address family AF_INET
@@ -44,6 +44,20 @@ int main() {
 		error("ERROR on binding");
 	}
 	
+	// Allow connection requests to queue
+	listen(	sockfd, // file descriptor for SOCK_STREAM or SOCK_SEQPACKET
+			1		// max length of pending connections
+		);
+	
+	// Pull connection request from queue, or block until request made
+	clilen = sizeof(cliaddr);
+	newsockfd = accept(sockfd,
+		(struct sockaddr *) &cli_addr,
+		&clilen
+		);
+	if (newsockfd < 0) {
+		error("ERROR on accept");
+	}
 
 	return 0;
 }
