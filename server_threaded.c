@@ -16,22 +16,20 @@ void error(const char *msg){
 
 int main() {
 
-	int sockfd;				// Socket file descriptor
-	int newsockfd;			//
-	int portno;				// Port number
-	socklen_t clilen;		//
-	char buffer[256]		// buffer for message
+	int sockfd;				// listening socket file descriptor
+	int newsockfd;			// client file descriptor
+	int portno;				// port number
+	socklen_t clilen;		// ?
+	char buffer[256];		// buffer for message
 	struct sockaddr_in serv_addr, cli_addr; // server and client addrs
 	int n;
 
 	// Open socket
 	sockfd = socket(
-					AF_INET,		// Just use AF_INET
-					SOCK_STREAM,	// SOCK_STREAM = TCP, SOCK_DGRAM=UDP
-					0);				// ?
-	if(sockfd < 0) {
-		error("ERROR opening socket");
-	}
+				AF_INET,		// Just use AF_INET
+				SOCK_STREAM,	// SOCK_STREAM = TCP, SOCK_DGRAM=UDP
+				0);				// ?
+	if(sockfd < 0) { error("ERROR opening socket"); }
 
 	// Bind socket
 	bzero((char *) &serv_addr, sizeof(serv_addr)); // zero addr struct
@@ -50,14 +48,26 @@ int main() {
 		);
 	
 	// Pull connection request from queue, or block until request made
-	clilen = sizeof(cliaddr);
+	clilen = sizeof(cli_addr);
 	newsockfd = accept(sockfd,
 		(struct sockaddr *) &cli_addr,
 		&clilen
 		);
-	if (newsockfd < 0) {
-		error("ERROR on accept");
-	}
+	if (newsockfd < 0) { error("ERROR on accept"); }
 
+	// Read from client
+	bzero(buffer, 256);
+	n = read(newsockfd, buffer, 255);
+	if (n < 0) { error("ERROR reading from socket"); }
+	// TODO: EINTR check
+
+	// Output and echo
+	printf("Received %s\n", buffer);
+	n = write(newsockfd, buffer, n);
+	if (n < 0) { error("ERROR writing to socket"); }
+
+	// Close sockets
+	close(newsockfd);
+	close(sockfd);
 	return 0;
 }

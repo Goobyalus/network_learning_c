@@ -1,7 +1,9 @@
 CC = gcc
 CFLAGS = -g -Wall
 
-BIN = server client
+BIN = server client server_threaded
+
+.DEFAULT_GOAL = all
 
 server_threaded:
 	$(CC) -o server_threaded server_threaded.c $(CFLAGS)
@@ -18,4 +20,4 @@ client:
 all:$(BIN)
 
 clean:
-	rm -f *.o server client
+	rm -f *.o $(BIN)
