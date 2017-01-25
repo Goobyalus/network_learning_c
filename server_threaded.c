@@ -69,7 +69,10 @@ void *echo_server_thread(void *portstr) {
 		bzero(buffer, 256);
 		n = read(newsockfd, buffer, 255);
 		if (n < 0) { terror("ERROR reading from socket", newsockfd, sockfd); }
+		if (n == 0) {terror("ERROR client closed", newsockfd, sockfd);}
 		// TODO: EINTR check
+		
+		
 		
 		// Output and echo
 		printf("Received %s\n", buffer);

@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall
 
-BIN = server client server_threaded
+BIN = server client server_threaded client_threaded
 
 .DEFAULT_GOAL = all
 
