@@ -25,6 +25,8 @@ enum readline_success readline(
 		return ERROR;
 	}
 	if ('\n' != buffer[bufsize-1]) {
+		// Termina te buffer
+		buffer[bufsize-1] = '\0';
 		// Line did not fit in buffer - throw rest of line out
 		while ('\n' != getchar());
 		return TOO_LONG
