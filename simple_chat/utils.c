@@ -1,9 +1,5 @@
 #include <stdio.h>
-
-enum readline_success {
-	SUCCESS,
-	TOO_LONG,
-	ERROR};
+#include "utils.h"
 
 /*	readline: read a line of console input up to bufsize
  *	arguments:
@@ -12,7 +8,7 @@ enum readline_success {
  *		bufsize: in; size of buffer
  *	return value:
  *		return an enum realine_success with result of read
- *	Notes:
+ *	notes:
  * 		It is caller's responsibility to zero buffer before calling.
  */
 enum readline_success readline(
