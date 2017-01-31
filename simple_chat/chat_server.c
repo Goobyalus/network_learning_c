@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include "utils.h"
+#include "chat_server.h"
 
 const int BUFFER_LENGTH = 512;
 
@@ -49,8 +50,8 @@ int main() {
 	char buffer[BUFFER_LENGTH];
 	
 	// Initialize mutexes
-	if (! ( pthread_mutex_init(&incoming_lock) &&
-			pthread_mutex_init(&outgoing_lock)) ) {
+	if (! ( pthread_mutex_init(&incoming_lock, NULL) &&
+			pthread_mutex_init(&outgoing_lock, NULL)) ) {
 		printf("Error initializing mutexes.\n\n");
 		return 1;
 	}
@@ -65,8 +66,8 @@ int main() {
 		if (0 == strcmp("exit", buffer)) {
 			break;
 		}
-		else if (0 == strncmp("connect", buffer, 7) {
-			connect(buffer);
+		else if ( 0 == strncmp("connect", buffer, 7) ) {
+			connect_to(buffer);
 		}
 		else {
 			printf("Unknown command\n\n");
