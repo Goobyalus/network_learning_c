@@ -29,7 +29,7 @@ enum readline_success readline(
 		buffer[bufsize-1] = '\0';
 		// Line did not fit in buffer - throw rest of line out
 		while ('\n' != getchar());
-		return TOO_LONG
+		return TOO_LONG;
 	}
 	
 	return SUCCESS;

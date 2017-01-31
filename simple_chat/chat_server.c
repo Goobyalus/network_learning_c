@@ -8,6 +8,8 @@
 #include <pthread.h>
 #include "utils.h"
 
+const int BUFFER_LENGTH = 512;
+
 pthread_mutex_t incoming_lock;
 pthread_mutex_t outgoing_lock;
 
@@ -19,7 +21,7 @@ pthread_mutex_t outgoing_lock;
  *	notes: This function should block until the connection is closed,
  *		or the connection attempt fails.
  */
-int connect(char *buffer) {
+int connect_to(char *buffer) {
 	// Validate arguments
 	
 	// Attempt to connect
@@ -29,12 +31,21 @@ int connect(char *buffer) {
 	return 0;
 }
 
-void  *listen_for_connections(void *arg) {
+lfc_ret_t listen_for_connections(lfc_args_t *args) {
+	int sockfd;
+	socklen_t clilen;
+	char in_buffer[BUFFER_LENGTH];
+	struct sockaddr_in serv_addr, cli_addr;
+	int n;
+	
+	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (sockfd < 0) {
+		return SOCKET_ERROR;
+	}
 	
 }
 
 int main() {
-	const int BUFFER_LENGTH = 512;
 	char buffer[BUFFER_LENGTH];
 	
 	// Initialize mutexes
